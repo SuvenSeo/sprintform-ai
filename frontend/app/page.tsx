@@ -172,7 +172,7 @@ export default function Home() {
           <div className="main-column">
             <div className="video-panel">
               {videoSrc ? (
-                <video className="video" controls preload="metadata" poster={job?.artifacts.poster ?? undefined} src={videoSrc} />
+                <video key={videoSrc} className="video" controls preload="auto" poster={job?.artifacts.poster ?? undefined} src={videoSrc} />
               ) : (
                 <div className="empty-video">
                   <div>
