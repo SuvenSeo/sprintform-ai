@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "fileSize": 222280,
+  "fileType": "video/webm",
+  "text": "Sprintform AI\n\nPose landmark extraction, annotated video, frame metrics, and coaching reports for sprint and jump mechanics.\n\nSample\nUpload\nFrame timeline\n\nFrame 23 at 3006 ms\n\nTRUNK LEAN\n\n-17.19 deg\n\nLEFT KNEE\n\n160.79 deg\n\nRIGHT KNEE\n\n101.59 deg\n\nANKLE SEPARATION\n\n0.34\n\nKnee angle trace\nframe 0\nframe 25\nHip height and stride proxy\nframe 0\nframe 25\nAnalysis job\n\nrunner-upload.webm\n\nCOMPLETE\n\nFRAMES\n\n3\n\n3267 ms analyzed\n\nTRUNK LEAN\n\n-16.93 deg\n\nAverage normalized 2D estimate\n\nSTRIDE PROXY\n\n0.341\n\nPeak ankle separation\n\nKNEE RANGE\n\n99.74-163.05\n\nFlexion to extension angle\n\nExports\nJSON report\nPDF report\nAnnotated video\nMeasurement limits\n\nMetrics are 2D single-camera estimates for coaching review and engineering demonstration. They are not medical-grade or lab biomechanics.",
+  "exportLinks": [
+    {
+      "text": "JSON report",
+      "href": "blob:http://127.0.0.1:3003/0ba137eb-7bcd-40f9-b1f6-7ad5831e8eec",
+      "download": "runner-upload-report.json"
+    },
+    {
+      "text": "PDF report",
+      "href": "blob:http://127.0.0.1:3003/06a71230-b941-40ec-b11a-29374adedfce",
+      "download": "runner-upload-report.pdf"
+    },
+    {
+      "text": "Annotated video",
+      "href": "blob:http://127.0.0.1:3003/d0cd1654-6616-480a-b2f8-c87fdc472295",
+      "download": "runner-upload-annotated.webm"
+    }
+  ],
+  "videoSrc": "blob:http://127.0.0.1:3003/d0cd1"
+}

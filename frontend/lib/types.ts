@@ -1,6 +1,7 @@
 export type Job = {
   id: string;
   status: "queued" | "processing" | "complete" | "failed";
+  origin?: "api" | "browser" | "demo";
   sourceName: string;
   createdAt: string;
   updatedAt: string;
@@ -10,6 +11,11 @@ export type Job = {
     annotatedVideo?: string | null;
     json?: string | null;
     pdf?: string | null;
+  };
+  artifactNames?: {
+    annotatedVideo?: string;
+    json?: string;
+    pdf?: string;
   };
 };
 
@@ -22,6 +28,7 @@ export type Summary = {
   minKneeFlexionDeg: number;
   maxKneeExtensionDeg: number;
   hipHeightRangeNorm: number;
+  avgPoseConfidence?: number;
   limitations: string[];
 };
 
@@ -35,6 +42,7 @@ export type FrameMetric = {
   rightArmDeg: number;
   ankleSeparationNorm: number;
   hipHeightNorm: number;
+  poseConfidence?: number;
 };
 
 export type Report = {
@@ -42,6 +50,22 @@ export type Report = {
   sourceName: string;
   summary: Summary;
   frames: FrameMetric[];
+  poses?: Array<{
+    frame: number;
+    timestampMs: number;
+    detector: string;
+    landmarks: Array<{
+      x: number;
+      y: number;
+      z?: number;
+      visibility?: number;
+    }>;
+  }>;
   artifacts: Job["artifacts"];
 };
 
+export type BrowserAnalysisResult = {
+  report: Report;
+  artifacts: Job["artifacts"];
+  artifactNames: NonNullable<Job["artifactNames"]>;
+};

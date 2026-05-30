@@ -7,7 +7,7 @@ This file records local proof from the MVP build.
 1. Start FastAPI from `backend`.
 2. Start Next.js from `frontend`.
 3. Open `http://localhost:3000`.
-4. Click `Sample`.
+4. Upload a browser-decodable sprint/jump clip or click `Sample`.
 5. Wait for a completed job.
 6. Confirm the annotated video, frame dashboard, JSON export, and PDF export are available.
 
@@ -42,3 +42,6 @@ npm run dev
 - `VERCEL=1 npm run dev -- --hostname 127.0.0.1 --port 3002` plus headless Chrome: Sample button loaded `/demo/annotated.mp4`, `/demo/report.json`, and `/demo/report.pdf`.
 - Vercel-mode screenshot evidence: `demo/vercel-mode-dashboard.png`.
 - Vercel-mode browser text evidence: `demo/vercel-mode-browser-check.json`.
+- Browser upload processing was verified with a generated WebM runner clip in headless Chrome: MediaPipe Pose loaded from vendored frontend assets, the upload completed, and JSON/PDF/annotated video export links were created as Blob URLs.
+- Browser upload evidence files: `demo/browser-upload-check.json` and `demo/browser-upload-dashboard.png`.
+- Public Vercel upload path is expected to produce annotated WebM output because browser-native recording uses `MediaRecorder`.

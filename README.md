@@ -10,9 +10,10 @@ This is not medical software and does not claim professional biomechanical accur
 
 ## Features
 
+- Public Vercel upload analysis runs in the browser with vendored MediaPipe Pose assets.
 - FastAPI upload and sample-analysis API.
 - OpenCV video decoding and annotated MP4 rendering.
-- MediaPipe Pose Landmarker integration point when a local model is supplied.
+- MediaPipe pose landmark extraction for browser uploads and the local Python worker.
 - Synthetic fallback/sample pipeline so the public demo runs without private athlete footage.
 - Sprint/jump-focused metrics: trunk lean, knee angles, arm angles, ankle separation proxy, and hip-height rhythm.
 - SQLite job metadata.
@@ -24,7 +25,12 @@ This is not medical software and does not claim professional biomechanical accur
 
 ```mermaid
 flowchart LR
-    U["Video Upload / Sample Video"] --> API["FastAPI Job API"]
+    U["Video Upload"] --> BP["Browser MediaPipe Pose"]
+    BP --> BM["Client Metric Computation"]
+    BP --> BV["Canvas/WebM Annotated Renderer"]
+    BM --> UI["Next.js Analysis Dashboard"]
+    BV --> UI
+    S["Sample / Local API Flow"] --> API["FastAPI Job API"]
     API --> Q["Local Background Task"]
     Q --> P["Pose Extraction Worker"]
     P --> M["Metric Computation"]
@@ -55,11 +61,18 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`, then click `Sample` to generate a synthetic sprint clip and a full analysis report.
+Open `http://localhost:3000`, then upload a browser-decodable sprint/jump clip or click `Sample` to generate a synthetic sprint clip and a full analysis report.
 
 ## Public Deployment
 
-The Vercel deployment hosts the Next.js workstation from `frontend`. Because the FastAPI/OpenCV worker is a local processing service in this MVP, the public app falls back to bundled demo artifacts under `frontend/public/demo` when the API is unavailable. That keeps the portfolio demo usable while preserving the real local processing pipeline for upload and sample analysis.
+The Vercel deployment hosts the Next.js workstation from `frontend`.
+
+- Upload analysis runs fully in the browser using `@mediapipe/pose` assets vendored under `frontend/public/mediapipe/pose`.
+- The browser path samples up to 20 seconds / 160 frames, computes sprint/jump metrics, renders an annotated WebM, and exports JSON/PDF reports.
+- The FastAPI/OpenCV worker remains available for local backend processing and annotated MP4 generation.
+- The sample button uses the local API when available and falls back to bundled demo artifacts under `frontend/public/demo` on Vercel.
+
+Browser uploads require a video format the browser can decode. Phone/camera H.264 MP4/MOV and WebM files are the intended inputs.
 
 ## Tests
 
@@ -70,11 +83,12 @@ cd backend
 
 ```powershell
 cd frontend
+npm run lint
 npm run build
 ```
 
 ## Pose Model Notes
 
-The `PoseExtractor` class uses MediaPipe Pose Landmarker when a local `.task` model path is provided. Without a model, the MVP falls back to synthetic landmarks for sample/demo processing. That fallback keeps the public project self-contained and avoids private athlete footage.
+The public upload path uses MediaPipe Pose in the browser. The Python `PoseExtractor` class also uses MediaPipe when the Python dependency is installed, and otherwise falls back to deterministic synthetic landmarks for the bundled sample/demo path. That fallback keeps the public project self-contained and avoids private athlete footage.
 
-Recommended next step: add a model download/setup script and compare MediaPipe against Ultralytics YOLO pose on public sprint/jump clips with documented limitations.
+Recommended next step: compare MediaPipe against Ultralytics YOLO pose on public sprint/jump clips with documented limitations and confidence scoring.

@@ -5,6 +5,9 @@ const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
 });
 
-const config = Array.isArray(nextVitals) ? nextVitals : [...compat.config(nextVitals)];
+const config = [
+  { ignores: ["public/mediapipe/**"] },
+  ...(Array.isArray(nextVitals) ? nextVitals : compat.config(nextVitals)),
+];
 
 export default config;

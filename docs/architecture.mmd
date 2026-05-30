@@ -1,5 +1,10 @@
 flowchart LR
-    U["Video Upload / Sample Video"] --> API["FastAPI Job API"]
+    U["Video Upload"] --> BP["Browser MediaPipe Pose"]
+    BP --> BM["Client Metric Computation"]
+    BP --> BV["Canvas/WebM Annotated Renderer"]
+    BM --> UI["Next.js Analysis Dashboard"]
+    BV --> UI
+    S["Sample / Local API Flow"] --> API["FastAPI Job API"]
     API --> Q["Local Background Task"]
     Q --> P["Pose Extraction Worker"]
     P --> M["Metric Computation"]
@@ -9,4 +14,3 @@ flowchart LR
     DB --> API
     FS --> API
     API --> UI["Next.js Analysis Dashboard"]
-

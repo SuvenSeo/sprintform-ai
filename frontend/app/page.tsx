@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { Activity, Download, FileJson, FileText, Play, Upload } from "lucide-react";
 import { FrameDashboard } from "@/components/FrameDashboard";
 import { MetricCard } from "@/components/MetricCard";
+import { analyzeVideoInBrowser } from "@/lib/browserAnalysis";
 import type { Job, Report } from "@/lib/types";
 
 export default function Home() {
@@ -12,12 +13,13 @@ export default function Home() {
   const [selectedFrame, setSelectedFrame] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<{ stage: string; percent: number } | null>(null);
 
   useEffect(() => {
-    if (!job || job.status === "complete" || job.status === "failed") return;
+    if (!job || job.origin !== "api" || job.status === "complete" || job.status === "failed") return;
     const timer = window.setInterval(async () => {
       const next = await fetch(`/api/jobs/${job.id}`).then((res) => res.json());
-      setJob(next);
+      setJob({ ...next, origin: "api" });
       if (next.status === "complete") {
         const reportData = await fetch(`/api/jobs/${job.id}/report`).then((res) => res.json());
         setReport(reportData);
@@ -29,6 +31,7 @@ export default function Home() {
 
   const videoSrc = useMemo(() => {
     if (!job?.artifacts.annotatedVideo) return null;
+    if (job.artifacts.annotatedVideo.startsWith("blob:")) return job.artifacts.annotatedVideo;
     return `${job.artifacts.annotatedVideo}?t=${job.updatedAt}`;
   }, [job]);
 
@@ -36,6 +39,7 @@ export default function Home() {
     setBusy(true);
     setError(null);
     setReport(null);
+    setProgress({ stage: "Starting sample analysis", percent: 0 });
     try {
       const response = await fetch("/api/analyze/sample", { method: "POST" });
       if (!response.ok) {
@@ -43,11 +47,12 @@ export default function Home() {
         return;
       }
       const next = await response.json();
-      setJob(next);
+      setJob({ ...next, origin: "api" });
     } catch {
       await loadBundledDemo();
     } finally {
       setBusy(false);
+      setProgress(null);
     }
   }
 
@@ -63,12 +68,18 @@ export default function Home() {
     setJob({
       id: "public-demo",
       status: "complete",
+      origin: "demo",
       sourceName: "bundled-synthetic-sprint-demo.mp4",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       error: null,
       summary: reportData.summary,
       artifacts,
+      artifactNames: {
+        annotatedVideo: "sample-annotated.mp4",
+        json: "sample-report.json",
+        pdf: "sample-report.pdf",
+      },
     });
   }
 
@@ -78,15 +89,43 @@ export default function Home() {
     setBusy(true);
     setError(null);
     setReport(null);
-    const form = new FormData();
-    form.append("file", file);
+    setProgress({ stage: "Preparing upload", percent: 0 });
+    const createdAt = new Date().toISOString();
+    setJob({
+      id: crypto.randomUUID(),
+      status: "processing",
+      origin: "browser",
+      sourceName: file.name,
+      createdAt,
+      updatedAt: createdAt,
+      error: null,
+      artifacts: {},
+    });
     try {
-      const next = await fetch("/api/analyze/upload", { method: "POST", body: form }).then((res) => res.json());
-      setJob(next);
-    } catch {
-      setError("Upload failed. Use mp4, mov, avi, or mkv and confirm the API is available.");
+      const result = await analyzeVideoInBrowser(file, setProgress);
+      const updatedAt = new Date().toISOString();
+      setReport(result.report);
+      setSelectedFrame(result.report.frames[0]?.frame ?? 0);
+      setJob({
+        id: result.report.jobId,
+        status: "complete",
+        origin: "browser",
+        sourceName: file.name,
+        createdAt,
+        updatedAt,
+        error: null,
+        summary: result.report.summary,
+        artifacts: result.artifacts,
+        artifactNames: result.artifactNames,
+      });
+    } catch (caught) {
+      const message = caught instanceof Error ? caught.message : "Upload analysis failed. Try a clear full-body sprint or jump clip.";
+      setError(message);
+      setJob((current) => current ? { ...current, status: "failed", error: message, updatedAt: new Date().toISOString() } : null);
     } finally {
       setBusy(false);
+      setProgress(null);
+      event.target.value = "";
     }
   }
 
@@ -108,14 +147,25 @@ export default function Home() {
             >
               <Play size={17} /> Sample
             </button>
-            <label className="upload-button">
+            <label className={`upload-button ${busy ? "disabled-control" : ""}`} aria-disabled={busy}>
               <Upload size={17} /> Upload
-              <input className="hidden-input" type="file" accept="video/*" onChange={uploadVideo} />
+              <input className="hidden-input" type="file" accept="video/*" onChange={uploadVideo} disabled={busy} />
             </label>
           </div>
         </header>
 
         {error ? <div className="error">{error}</div> : null}
+        {progress ? (
+          <div className="progress-panel" aria-live="polite">
+            <div className="progress-row">
+              <span>{progress.stage}</span>
+              <strong>{progress.percent}%</strong>
+            </div>
+            <div className="progress-track">
+              <div className="progress-fill" style={{ width: `${progress.percent}%` }} />
+            </div>
+          </div>
+        ) : null}
 
         <section className="workstation">
           <div className="main-column">
@@ -165,9 +215,9 @@ export default function Home() {
             <div className="panel">
               <h2>Exports</h2>
               <div className="export-grid">
-                <ExportLink href={job?.artifacts.json} icon={<FileJson size={17} />} label="JSON report" />
-                <ExportLink href={job?.artifacts.pdf} icon={<FileText size={17} />} label="PDF report" />
-                <ExportLink href={job?.artifacts.annotatedVideo} icon={<Download size={17} />} label="Annotated video" />
+                <ExportLink href={job?.artifacts.json} download={job?.artifactNames?.json} icon={<FileJson size={17} />} label="JSON report" />
+                <ExportLink href={job?.artifacts.pdf} download={job?.artifactNames?.pdf} icon={<FileText size={17} />} label="PDF report" />
+                <ExportLink href={job?.artifacts.annotatedVideo} download={job?.artifactNames?.annotatedVideo} icon={<Download size={17} />} label="Annotated video" />
               </div>
             </div>
 
@@ -184,12 +234,13 @@ export default function Home() {
   );
 }
 
-function ExportLink({ href, icon, label }: { href?: string | null; icon: React.ReactNode; label: string }) {
+function ExportLink({ href, download, icon, label }: { href?: string | null; download?: string; icon: React.ReactNode; label: string }) {
   const enabled = Boolean(href);
   return (
     <a
       className={`export-link ${enabled ? "" : "disabled"}`}
       href={href ?? "#"}
+      download={download}
       target="_blank"
       rel="noreferrer"
     >
