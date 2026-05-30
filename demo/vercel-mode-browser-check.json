@@ -1,0 +1,19 @@
+{
+  "text": "Sprintform AI\n\nPose landmark extraction, annotated video, frame metrics, and coaching reports for sprint and jump mechanics.\n\nSample\nUpload\nFrame timeline\n\nFrame 0 at 0 ms\n\nTRUNK LEAN\n\n15.41 deg\n\nLEFT KNEE\n\n175.89 deg\n\nRIGHT KNEE\n\n176.09 deg\n\nANKLE SEPARATION\n\n0.24\n\nKnee angle trace\nframe 0\nframe 23\nHip height and stride proxy\nframe 0\nframe 23\nAnalysis job\n\nbundled-synthetic-sprint-demo.mp4\n\nCOMPLETE\n\nFRAMES\n\n24\n\n958 ms analyzed\n\nTRUNK LEAN\n\n15.41 deg\n\nAverage normalized 2D estimate\n\nSTRIDE PROXY\n\n0.47\n\nPeak ankle separation\n\nKNEE RANGE\n\n157.25-179.43\n\nFlexion to extension angle\n\nExports\nJSON report\nPDF report\nAnnotated video\nMeasurement limits\n\nMetrics are 2D single-camera estimates for coaching review and engineering demonstration. They are not medical-grade or lab biomechanics.",
+  "hasVideo": true,
+  "videoSrc": "/demo/annotated.mp4?t=2026-05-30T15:38:12.833Z",
+  "exports": [
+    {
+      "text": "JSON report",
+      "href": "/demo/report.json"
+    },
+    {
+      "text": "PDF report",
+      "href": "/demo/report.pdf"
+    },
+    {
+      "text": "Annotated video",
+      "href": "/demo/annotated.mp4"
+    }
+  ]
+}

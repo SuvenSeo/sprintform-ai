@@ -1,0 +1,12 @@
+flowchart LR
+    U["Video Upload / Sample Video"] --> API["FastAPI Job API"]
+    API --> Q["Local Background Task"]
+    Q --> P["Pose Extraction Worker"]
+    P --> M["Metric Computation"]
+    P --> V["Annotated Video Renderer"]
+    M --> DB[("SQLite job metadata")]
+    V --> FS["Local artifacts: MP4 / JSON / PDF"]
+    DB --> API
+    FS --> API
+    API --> UI["Next.js Analysis Dashboard"]
+
