@@ -1,24 +1,24 @@
 {
   "ok": true,
-  "fileSize": 222280,
+  "fileSize": 222281,
   "fileType": "video/webm",
-  "text": "Sprintform AI\n\nPose landmark extraction, annotated video, frame metrics, and coaching reports for sprint and jump mechanics.\n\nSample\nUpload\nFrame timeline\n\nFrame 23 at 3006 ms\n\nTRUNK LEAN\n\n-17.19 deg\n\nLEFT KNEE\n\n160.79 deg\n\nRIGHT KNEE\n\n101.59 deg\n\nANKLE SEPARATION\n\n0.34\n\nKnee angle trace\nframe 0\nframe 25\nHip height and stride proxy\nframe 0\nframe 25\nAnalysis job\n\nrunner-upload.webm\n\nCOMPLETE\n\nFRAMES\n\n3\n\n3267 ms analyzed\n\nTRUNK LEAN\n\n-16.93 deg\n\nAverage normalized 2D estimate\n\nSTRIDE PROXY\n\n0.341\n\nPeak ankle separation\n\nKNEE RANGE\n\n99.74-163.05\n\nFlexion to extension angle\n\nExports\nJSON report\nPDF report\nAnnotated video\nMeasurement limits\n\nMetrics are 2D single-camera estimates for coaching review and engineering demonstration. They are not medical-grade or lab biomechanics.",
+  "text": "Sprintform AI\n\nPose landmark extraction, annotated video, frame metrics, and coaching reports for sprint and jump mechanics.\n\nSample\nUpload\nFrame timeline\n\nFrame 23 at 3029 ms\n\nTRUNK LEAN\n\n-17.18 deg\n\nLEFT KNEE\n\n160.54 deg\n\nRIGHT KNEE\n\n102 deg\n\nANKLE SEPARATION\n\n0.341\n\nKnee angle trace\nframe 0\nframe 26\nHip height and stride proxy\nframe 0\nframe 26\nAnalysis job\n\nrunner-upload.webm\n\nCOMPLETE\n\nFRAMES\n\n4\n\n3424 ms analyzed\n\nTRUNK LEAN\n\n-16.87 deg\n\nAverage normalized 2D estimate\n\nSTRIDE PROXY\n\n0.341\n\nPeak ankle separation\n\nKNEE RANGE\n\n98.69-162.06\n\nFlexion to extension angle\n\nExports\nJSON report\nPDF report\nAnnotated video\nMeasurement limits\n\nMetrics are 2D single-camera estimates for coaching review and engineering demonstration. They are not medical-grade or lab biomechanics.",
   "exportLinks": [
     {
       "text": "JSON report",
-      "href": "blob:http://127.0.0.1:3003/0ba137eb-7bcd-40f9-b1f6-7ad5831e8eec",
+      "href": "blob:http://127.0.0.1:3003/907ffe01-a3f0-4bac-b690-7ddc1928a840",
       "download": "runner-upload-report.json"
     },
     {
       "text": "PDF report",
-      "href": "blob:http://127.0.0.1:3003/06a71230-b941-40ec-b11a-29374adedfce",
+      "href": "blob:http://127.0.0.1:3003/80b49740-ec36-4b2d-b886-b5caa5e208a6",
       "download": "runner-upload-report.pdf"
     },
     {
       "text": "Annotated video",
-      "href": "blob:http://127.0.0.1:3003/d0cd1654-6616-480a-b2f8-c87fdc472295",
+      "href": "blob:http://127.0.0.1:3003/b49225e0-66a5-400f-975e-c634c430f09d",
       "download": "runner-upload-annotated.webm"
     }
   ],
-  "videoSrc": "blob:http://127.0.0.1:3003/d0cd1"
+  "videoSrc": "blob:http://127.0.0.1:3003/b4922"
 }

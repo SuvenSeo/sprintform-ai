@@ -10,7 +10,7 @@ This is not medical software and does not claim professional biomechanical accur
 
 ## Features
 
-- Public Vercel upload analysis runs in the browser with vendored MediaPipe Pose assets.
+- Public Vercel upload analysis runs in the browser with a version-pinned MediaPipe Pose runtime.
 - FastAPI upload and sample-analysis API.
 - OpenCV video decoding and annotated MP4 rendering.
 - MediaPipe pose landmark extraction for browser uploads and the local Python worker.
@@ -67,7 +67,7 @@ Open `http://localhost:3000`, then upload a browser-decodable sprint/jump clip o
 
 The Vercel deployment hosts the Next.js workstation from `frontend`.
 
-- Upload analysis runs fully in the browser using `@mediapipe/pose` assets vendored under `frontend/public/mediapipe/pose`.
+- Upload analysis runs fully in the browser using `@mediapipe/pose` with version-pinned runtime assets loaded from jsDelivr.
 - The browser path samples up to 20 seconds / 160 frames, computes sprint/jump metrics, renders an annotated WebM, and exports JSON/PDF reports.
 - The FastAPI/OpenCV worker remains available for local backend processing and annotated MP4 generation.
 - The sample button uses the local API when available and falls back to bundled demo artifacts under `frontend/public/demo` on Vercel.
@@ -89,6 +89,6 @@ npm run build
 
 ## Pose Model Notes
 
-The public upload path uses MediaPipe Pose in the browser. The Python `PoseExtractor` class also uses MediaPipe when the Python dependency is installed, and otherwise falls back to deterministic synthetic landmarks for the bundled sample/demo path. That fallback keeps the public project self-contained and avoids private athlete footage.
+The public upload path uses MediaPipe Pose in the browser. The JavaScript package is installed locally, while large runtime/model assets are loaded from the pinned MediaPipe package on jsDelivr so Vercel does not have to serve multi-megabyte model files slowly. The Python `PoseExtractor` class also uses MediaPipe when the Python dependency is installed, and otherwise falls back to deterministic synthetic landmarks for the bundled sample/demo path. That fallback keeps the public project self-contained and avoids private athlete footage.
 
 Recommended next step: compare MediaPipe against Ultralytics YOLO pose on public sprint/jump clips with documented limitations and confidence scoring.

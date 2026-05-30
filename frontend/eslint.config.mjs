@@ -6,7 +6,6 @@ const compat = new FlatCompat({
 });
 
 const config = [
-  { ignores: ["public/mediapipe/**"] },
   ...(Array.isArray(nextVitals) ? nextVitals : compat.config(nextVitals)),
 ];
 

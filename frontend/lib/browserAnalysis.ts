@@ -5,6 +5,7 @@ import type { BrowserAnalysisResult, Report } from "@/lib/types";
 const MAX_ANALYSIS_SECONDS = 20;
 const MAX_FRAMES = 160;
 const TARGET_FPS = 8;
+const MEDIAPIPE_POSE_ASSET_BASE = "https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404";
 
 type Progress = {
   stage: string;
@@ -24,7 +25,7 @@ export async function analyzeVideoInBrowser(file: File, onProgress: (progress: P
   const { Pose } = await import("@mediapipe/pose");
   onProgress({ stage: "Initializing pose detector", percent: 7 });
   const landmarker = new Pose({
-    locateFile: (file: string) => `/mediapipe/pose/${file}`,
+    locateFile: (file: string) => `${MEDIAPIPE_POSE_ASSET_BASE}/${file}`,
   }) as PoseLandmarkerLike;
   landmarker.setOptions({
     modelComplexity: 0,
