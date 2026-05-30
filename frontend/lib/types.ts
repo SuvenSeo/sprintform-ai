@@ -11,6 +11,7 @@ export type Job = {
     annotatedVideo?: string | null;
     json?: string | null;
     pdf?: string | null;
+    poster?: string | null;
   };
   artifactNames?: {
     annotatedVideo?: string;

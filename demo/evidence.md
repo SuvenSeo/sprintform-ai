@@ -45,3 +45,5 @@ npm run dev
 - Browser upload processing was verified with a generated WebM runner clip in headless Chrome: MediaPipe Pose loaded from pinned runtime assets, the upload completed, and JSON/PDF/annotated video export links were created as Blob URLs.
 - Browser upload evidence files: `demo/browser-upload-check.json` and `demo/browser-upload-dashboard.png`.
 - Public Vercel upload path is expected to produce annotated WebM output because browser-native recording uses `MediaRecorder`.
+- Bundled sample fallback uses `frontend/public/demo/annotated.webm` plus `sample-poster.png`; the earlier MP4 fallback used an `FMP4` codec that could show a black/zero-duration video in Chrome.
+- Sample fallback browser evidence files: `demo/sample-browser-check.json` and `demo/sample-dashboard.png`.

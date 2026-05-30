@@ -59,9 +59,10 @@ export default function Home() {
   async function loadBundledDemo() {
     const reportData: Report = await fetch("/demo/report.json").then((res) => res.json());
     const artifacts = {
-      annotatedVideo: "/demo/annotated.mp4",
+      annotatedVideo: "/demo/annotated.webm",
       json: "/demo/report.json",
       pdf: "/demo/report.pdf",
+      poster: "/demo/sample-poster.png",
     };
     setReport({ ...reportData, artifacts });
     setSelectedFrame(reportData.frames[0]?.frame ?? 0);
@@ -69,14 +70,14 @@ export default function Home() {
       id: "public-demo",
       status: "complete",
       origin: "demo",
-      sourceName: "bundled-synthetic-sprint-demo.mp4",
+      sourceName: "bundled-synthetic-sprint-demo.webm",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       error: null,
       summary: reportData.summary,
       artifacts,
       artifactNames: {
-        annotatedVideo: "sample-annotated.mp4",
+        annotatedVideo: "sample-annotated.webm",
         json: "sample-report.json",
         pdf: "sample-report.pdf",
       },
@@ -171,7 +172,7 @@ export default function Home() {
           <div className="main-column">
             <div className="video-panel">
               {videoSrc ? (
-                <video className="video" controls src={videoSrc} />
+                <video className="video" controls preload="metadata" poster={job?.artifacts.poster ?? undefined} src={videoSrc} />
               ) : (
                 <div className="empty-video">
                   <div>

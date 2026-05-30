@@ -70,7 +70,7 @@ The Vercel deployment hosts the Next.js workstation from `frontend`.
 - Upload analysis runs fully in the browser using `@mediapipe/pose` with version-pinned runtime assets loaded from jsDelivr.
 - The browser path samples up to 20 seconds / 160 frames, computes sprint/jump metrics, renders an annotated WebM, and exports JSON/PDF reports.
 - The FastAPI/OpenCV worker remains available for local backend processing and annotated MP4 generation.
-- The sample button uses the local API when available and falls back to bundled demo artifacts under `frontend/public/demo` on Vercel.
+- The sample button uses the local API when available and falls back to bundled browser-playable WebM demo artifacts under `frontend/public/demo` on Vercel.
 
 Browser uploads require a video format the browser can decode. Phone/camera H.264 MP4/MOV and WebM files are the intended inputs.
 
